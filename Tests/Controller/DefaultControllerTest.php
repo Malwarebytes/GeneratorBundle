@@ -1,6 +1,6 @@
 <?php
 
-namespace Malwarebytes\TestDataGeneratorBundle\Tests\Controller;
+namespace Malwarebytes\GeneratorBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

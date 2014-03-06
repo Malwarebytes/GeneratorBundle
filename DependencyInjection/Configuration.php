@@ -1,6 +1,6 @@
 <?php
 
-namespace Malwarebytes\TestDataGeneratorBundle\DependencyInjection;
+namespace Malwarebytes\GeneratorBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,11 +18,24 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('malwarebytes_test_data_generator');
+        $rootNode = $treeBuilder->root('malwarebytes_test_data');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->fixXmlConfig('scenario')
+            ->children()
+                ->arrayNode('scenarios')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('entity')->isRequired()->end()
+                                ->scalarNode('rule')->isRequired()->end()
+                                ->integerNode('quantity')->isRequired()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

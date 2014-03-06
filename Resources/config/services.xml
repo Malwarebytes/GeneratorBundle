@@ -4,17 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
-        <parameter key="malwarebytes_test_data_generator.example.class">Malwarebytes\TestDataGeneratorBundle\Example</parameter>
+        <parameter key="malwarebytes_generator.faker.class">Faker\Generator</parameter>
+        <parameter key="malwarebytes_generator.faker.factory.class">Faker\Factory</parameter>
+        <parameter key="malwarebytes_generator.scenario.generator.class">Malwarebytes\GeneratorBundle\Scenario\Generator</parameter>
     </parameters>
 
     <services>
-        <service id="malwarebytes_test_data_generator.example" class="%malwarebytes_test_data_generator.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="malwarebytes_generator.faker"
+                 class="%malwarebytes_generator.faker.class%"
+                 factory-class="%malwarebytes_generator.faker.factory%"
+                 factory-method="create"
+        />
+
+        <service id="malwarebytes_generator.scenario.generator" class="%malwarebytes_generator.scenario.generator.class%">
+            <argument type="service" id="malwarebytes_generator.faker" />
         </service>
     </services>
-    -->
 </container>
