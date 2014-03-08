@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                         ->prototype('array')
                             ->children()
                                 ->scalarNode('entity')->isRequired()->end()
-                                ->scalarNode('rule')->isRequired()->end()
+                                ->scalarNode('category')->isRequired()->end()
                                 ->integerNode('quantity')->isRequired()->end()
                             ->end()
                         ->end()

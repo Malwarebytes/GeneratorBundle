@@ -7,7 +7,9 @@
     <parameters>
         <parameter key="malwarebytes_generator.faker.class">Faker\Generator</parameter>
         <parameter key="malwarebytes_generator.faker.factory.class">Faker\Factory</parameter>
-        <parameter key="malwarebytes_generator.scenario.generator.class">Malwarebytes\GeneratorBundle\Scenario\Generator</parameter>
+        <parameter key="malwarebytes_generator.scenario.generator.class">Malwarebytes\GeneratorBundle\Data\Generator</parameter>
+        <parameter key="malwarebytes_generator.scenario.factory.class">Malwarebytes\GeneratorBundle\Data\Factory\ScenarioFactory</parameter>
+        <parameter key="malwarebytes_generator.annotation.parser.class">Malwarebytes\GeneratorBundle\Parser\AnnotationParser</parameter>
     </parameters>
 
     <services>
@@ -20,5 +22,9 @@
         <service id="malwarebytes_generator.scenario.generator" class="%malwarebytes_generator.scenario.generator.class%">
             <argument type="service" id="malwarebytes_generator.faker" />
         </service>
+
+        <service id="malwarebytes_generator.scenario.factory" class="%malwarebytes_generator.scenario.factory.class%" />
+
+        <service id="malwarebytes_generator.annotation.parser" class="%malwarebytes_generator.annotation.parser.class%" />
     </services>
 </container>
