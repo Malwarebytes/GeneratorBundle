@@ -3,19 +3,21 @@
 namespace Malwarebytes\GeneratorBundle\Data;
 
 use Faker\Generator as Faker;
+use Malwarebytes\GeneratorBundle\Data\Factory\ScenarioFactory;
 use Malwarebytes\GeneratorBundle\Exception\InvalidArgumentException;
 use Malwarebytes\GeneratorBundle\Exception\InvalidConfigurationException;
+use Malwarebytes\GeneratorBundle\Ruleset\RulesetBuilder;
 
 class Generator
 {
     protected $faker;
-    protected $reader;
+    protected $builder;
     protected $scenarios = array();
 
-    public function __construct(Faker $faker, $reader, $factory, $config)
+    public function __construct(Faker $faker, ScenarioFactory $factory, RulesetBuilder $builder, $config)
     {
         $this->faker = $faker;
-        $this->reader = $reader;
+        $this->builder = $builder;
         foreach($config as $name => $scenario) {
             $this->scenarios[$name] = $factory->getNewScenario($scenario);
         }
@@ -52,12 +54,18 @@ class Generator
     {
         $class = $item->getEntity();
         $obj = new $class();
+        $reflection = new \ReflectionClass($class);
+        $props = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
 
-        $fields = $this->reader->readClass($class);
-        foreach($fields as $name => $field) {
-            $method = "set$name";
-            $formatter = $field->getFormatter();
-            $obj->$method($this->faker->$formatter);
+        $rules = $this->builder->buildRuleset($item->getEntity(), $item->getCategory());
+
+        foreach($rules as $field => $generator) {
+            if(in_array($field, $props)) {
+                $obj->$field = $generator();
+            } else {
+                $method = 'set' . $field;
+                $obj->$method($generator());
+            }
         }
 
         return $obj;

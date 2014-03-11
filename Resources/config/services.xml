@@ -9,6 +9,8 @@
         <parameter key="malwarebytes_generator.faker.factory.class">Faker\Factory</parameter>
         <parameter key="malwarebytes_generator.scenario.factory.class">Malwarebytes\GeneratorBundle\Data\Factory\ScenarioFactory</parameter>
         <parameter key="malwarebytes_generator.annotation.reader.class">Malwarebytes\GeneratorBundle\Reader\AnnotationReader</parameter>
+        <parameter key="malwarebytes_generator.populator.object.class">Malwarebytes\GeneratorBundle\Populator\ObjectPopulator</parameter>
+        <parameter key="malwarebytes_generator.ruleset.builder.class">Malwarebytes\GeneratorBundle\Ruleset\RulesetBuilder</parameter>
         <parameter key="malwarebytes_generator.scenario.generator.class">Malwarebytes\GeneratorBundle\Data\Generator</parameter>
     </parameters>
 
@@ -25,10 +27,17 @@
             <argument type="service" id="annotation_reader" />
         </service>
 
+        <service id="malwarebytes_generator.populator.object" class="%malwarebytes_generator.populator.object.class%" />
+
+        <service id="malwarebytes_generator.ruleset.builder" class="%malwarebytes_generator.ruleset.builder.class%">
+            <argument type="service" id="malwarebytes_generator.annotation.reader" />
+            <argument type="service" id="malwarebytes_generator.faker" />
+        </service>
+
         <service id="malwarebytes_generator.scenario.generator" class="%malwarebytes_generator.scenario.generator.class%">
             <argument type="service" id="malwarebytes_generator.faker" />
-            <argument type="service" id="malwarebytes_generator.annotation.reader" />
             <argument type="service" id="malwarebytes_generator.scenario.factory" />
+            <argument type="service" id="malwarebytes_generator.ruleset.builder" />
             <argument>%malwarebytes_generator.scenarios%</argument>
         </service>
     </services>

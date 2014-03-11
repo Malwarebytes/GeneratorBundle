@@ -20,18 +20,20 @@ class AnnotationReader
             return false;
         }
 
-        $rules = array();
+        $ruleset = array();
 
         $reflection = new \ReflectionClass($class);
         $properties = $reflection->getProperties();
 
         foreach($properties as $property) {
-            $rule = $this->reader->getPropertyAnnotation($property, $this->annotationName);
-            if(!is_null($rule)) {
-                $rules[$property->getName()] = $rule;
+            $rules = $this->reader->getPropertyAnnotations($property);
+            foreach($rules as $rule) {
+                if($rule instanceof $this->annotationName) {
+                    $ruleset[$property->getName()][] = $rule;
+                }
             }
         }
 
-        return $rules;
+        return $ruleset;
     }
 }

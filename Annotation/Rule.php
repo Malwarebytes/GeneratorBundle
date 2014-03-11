@@ -9,6 +9,7 @@ class Rule
 {
     protected $category = null;
     protected $formatter;
+    protected $arguments = array();
     protected $optional = false;
     protected $unique = false;
 
@@ -37,6 +38,22 @@ class Rule
     public function getFormatter()
     {
         return $this->formatter;
+    }
+
+    /**
+     * @param array $arguments
+     */
+    public function setArguments($arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
     /**

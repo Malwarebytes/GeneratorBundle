@@ -35,6 +35,11 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->enumNode('populator')
+                    ->values(array('csv', 'doctrine', 'propel', 'mandango'))
+                    ->defaultValue('csv')
+                ->end()
+                ->integerNode('seed')->end()
             ->end();
 
         return $treeBuilder;
