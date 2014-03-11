@@ -7,24 +7,29 @@
     <parameters>
         <parameter key="malwarebytes_generator.faker.class">Faker\Generator</parameter>
         <parameter key="malwarebytes_generator.faker.factory.class">Faker\Factory</parameter>
-        <parameter key="malwarebytes_generator.scenario.generator.class">Malwarebytes\GeneratorBundle\Data\Generator</parameter>
         <parameter key="malwarebytes_generator.scenario.factory.class">Malwarebytes\GeneratorBundle\Data\Factory\ScenarioFactory</parameter>
-        <parameter key="malwarebytes_generator.annotation.parser.class">Malwarebytes\GeneratorBundle\Parser\AnnotationParser</parameter>
+        <parameter key="malwarebytes_generator.annotation.reader.class">Malwarebytes\GeneratorBundle\Reader\AnnotationReader</parameter>
+        <parameter key="malwarebytes_generator.scenario.generator.class">Malwarebytes\GeneratorBundle\Data\Generator</parameter>
     </parameters>
 
     <services>
         <service id="malwarebytes_generator.faker"
                  class="%malwarebytes_generator.faker.class%"
-                 factory-class="%malwarebytes_generator.faker.factory%"
+                 factory-class="%malwarebytes_generator.faker.factory.class%"
                  factory-method="create"
         />
 
-        <service id="malwarebytes_generator.scenario.generator" class="%malwarebytes_generator.scenario.generator.class%">
-            <argument type="service" id="malwarebytes_generator.faker" />
-        </service>
-
         <service id="malwarebytes_generator.scenario.factory" class="%malwarebytes_generator.scenario.factory.class%" />
 
-        <service id="malwarebytes_generator.annotation.parser" class="%malwarebytes_generator.annotation.parser.class%" />
+        <service id="malwarebytes_generator.annotation.reader" class="%malwarebytes_generator.annotation.reader.class%">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
+        <service id="malwarebytes_generator.scenario.generator" class="%malwarebytes_generator.scenario.generator.class%">
+            <argument type="service" id="malwarebytes_generator.faker" />
+            <argument type="service" id="malwarebytes_generator.annotation.reader" />
+            <argument type="service" id="malwarebytes_generator.scenario.factory" />
+            <argument>%malwarebytes_generator.scenarios%</argument>
+        </service>
     </services>
 </container>

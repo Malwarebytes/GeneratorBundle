@@ -7,6 +7,8 @@ use Malwarebytes\GeneratorBundle\Data\Scenario;
 
 class ScenarioFactory
 {
+    protected $fields = array('entity', 'quantity', 'category');
+
     public function getNewScenario($config)
     {
         $scenario = new Scenario();
@@ -25,11 +27,11 @@ class ScenarioFactory
     {
         $item = new Item();
 
-        if(!in_array(array('entity', 'quantity', 'category'), array_keys($config))) {
+        if(!array_intersect($this->fields, array_keys($config)) == $this->fields) {
             return false;
         }
 
-        if(!is_numeric($quantity)) {
+        if(!is_numeric($config['quantity'])) {
             return false;
         }
 
