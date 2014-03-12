@@ -10,14 +10,14 @@ use Malwarebytes\GeneratorBundle\Ruleset\RulesetBuilder;
 
 class Generator
 {
-    protected $faker;
     protected $builder;
+    protected $populator;
     protected $scenarios = array();
 
-    public function __construct(Faker $faker, ScenarioFactory $factory, RulesetBuilder $builder, $config)
+    public function __construct(ScenarioFactory $factory, RulesetBuilder $builder, $populator, $config)
     {
-        $this->faker = $faker;
         $this->builder = $builder;
+        $this->populator = $populator;
         foreach($config as $name => $scenario) {
             $this->scenarios[$name] = $factory->getNewScenario($scenario);
         }
@@ -42,32 +42,11 @@ class Generator
                 throw new InvalidConfigurationException("The entity " . $item->getEntity() . " does not exist.");
             }
 
-            for($i = 0; $i < $item->getQuantity(); $i++) {
-                $items[] = $this->doGenerate($item);
-            }
+            $rules = $this->builder->buildRuleset($item->getEntity(), $item->getCategory());
+            $this->populator->addEntity($item->getEntity(), $item->getQuantity(), $rules);
         }
+        $items = $this->populator->execute();
 
         return $items;
-    }
-
-    protected function doGenerate($item)
-    {
-        $class = $item->getEntity();
-        $obj = new $class();
-        $reflection = new \ReflectionClass($class);
-        $props = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
-
-        $rules = $this->builder->buildRuleset($item->getEntity(), $item->getCategory());
-
-        foreach($rules as $field => $generator) {
-            if(in_array($field, $props)) {
-                $obj->$field = $generator();
-            } else {
-                $method = 'set' . $field;
-                $obj->$method($generator());
-            }
-        }
-
-        return $obj;
     }
 }

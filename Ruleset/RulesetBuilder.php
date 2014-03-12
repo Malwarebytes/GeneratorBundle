@@ -29,7 +29,7 @@ class RulesetBuilder
             foreach($annots as $annot) {
                 $cat = $annot->getCategory();
                 if($cat === $category) {
-                    $rules[$name] = $this->wrapInClosure($annot->getFormatter(), $annot->getArguments());
+                    $rules[$name] = $this->wrapInClosure($annot);
                     $filled[] = $name;
                 }
             }
@@ -39,7 +39,7 @@ class RulesetBuilder
             foreach($annots as $annot) {
                 $cat = $annot->getCategory();
                 if(is_null($cat) && !in_array($name, $filled)) {
-                    $rules[$name] = $this->wrapInClosure($annot->getFormatter(), $annot->getArguments());
+                    $rules[$name] = $this->wrapInClosure($annot);
                 }
             }
         }
@@ -47,10 +47,23 @@ class RulesetBuilder
         return $rules;
     }
 
-    protected function wrapInClosure($formatter, $args = null)
+    protected function wrapInClosure($annot)
     {
+        $formatter = $annot->getFormatter();
+        $args = $annot->getArguments();
+
         $faker = $this->faker;
-        if(is_null($args) || count($args) === 0) {
+        if($annot->getUnique()) {
+            $faker = $faker->unique();
+        }
+        if($annot->getOptional()) {
+            $faker = $faker->optional();
+        }
+
+
+        if($formatter === 'null') {
+            $func = null;
+        } elseif(is_null($args) || count($args) === 0) {
             $func = function() use ($faker, $formatter) { return $faker->$formatter; };
         } else {
             $func = function() use ($faker, $formatter, $args) { return call_user_func_array(array($faker, $formatter), $args); };

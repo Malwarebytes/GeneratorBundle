@@ -27,7 +27,9 @@
             <argument type="service" id="annotation_reader" />
         </service>
 
-        <service id="malwarebytes_generator.populator.object" class="%malwarebytes_generator.populator.object.class%" />
+        <service id="malwarebytes_generator.populator.object" class="%malwarebytes_generator.populator.object.class%">
+            <argument type="service" id="malwarebytes_generator.faker" />
+        </service>
 
         <service id="malwarebytes_generator.ruleset.builder" class="%malwarebytes_generator.ruleset.builder.class%">
             <argument type="service" id="malwarebytes_generator.annotation.reader" />
@@ -35,9 +37,9 @@
         </service>
 
         <service id="malwarebytes_generator.scenario.generator" class="%malwarebytes_generator.scenario.generator.class%">
-            <argument type="service" id="malwarebytes_generator.faker" />
             <argument type="service" id="malwarebytes_generator.scenario.factory" />
             <argument type="service" id="malwarebytes_generator.ruleset.builder" />
+            <argument type="service" id="malwarebytes_generator.populator.object" />
             <argument>%malwarebytes_generator.scenarios%</argument>
         </service>
     </services>
