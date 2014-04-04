@@ -31,7 +31,6 @@
     "suggest": {
         "malwarebytes/test-data-bundle": "Fill me in later"
     },
-    "bin": ["bin/testRunner"],
     "minimum-stability": "stable",
     "autoload": {
         "psr-0": {
