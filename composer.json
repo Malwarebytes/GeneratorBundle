@@ -1,0 +1,42 @@
+{
+    "name":"malwarebytes/generator-bundle",
+    "description":"Easily create sets of sample or test data for your application based on doctrine entities and defined generation rules.",
+    "homepage":"https://github.com/Malwarebytes/GeneratorBundle",
+    "authors": [
+        {
+            "name": "Josh Hall-Bachner",
+            "email": "jhallbachner@malwarebytes.org",
+            "homepage": "http://malwarebytes.org",
+            "role": "Developer"
+        },
+        {
+            "name": "Jonathan Chan",
+            "email": "jchan@malwarebytes.org",
+            "homepage": "http://malwarebytes.org",
+            "role": "Developer"
+        },
+        {
+            "name": "Paul Hendryx",
+            "email": "phendryx@malwarebytes.org",
+            "homepage": "http://malwarebytes.org",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "~2.2",
+	    "phpunit/phpunit": "3.7.x",
+        "fzaninotto/faker": "~1.3"
+    },
+    "suggest": {
+        "malwarebytes/test-data-bundle": "Fill me in later"
+    },
+    "bin": ["bin/testRunner"],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-0": {
+            "Malwarebytes\\GeneratorBundle": ""
+        }
+    },
+    "target-dir":"Malwarebytes/GeneratorBundle"
+}
